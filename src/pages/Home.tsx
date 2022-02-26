@@ -108,7 +108,7 @@ export const Home: React.FC<Props> = () => {
     return (
     <div>
         <FormInput addBox={addBox}/>
-        <FormFilter />
+        <FormFilter filter={filter} />
         <div >
         {boxList.map((color:string, index:number)=><Box key={index} id={index} removeBox={removeBox} initIndex={numberInitBox} color={`${color}`}/>)} 
         </div>

@@ -1,36 +1,33 @@
 import React, { useState, useEffect} from 'react'
 
 interface Iform {
+    filter: (arg: boolean[]) => void;
 }
 
-interface Iprops {
-}
-
-export class FormFilter extends React.Component<Iform, Iprops> {
-    constructor(props: Iprops){
+export class FormFilter extends React.Component<Iform> {
+    constructor(props:Iform) {
         super(props);
         this.state = {
-            count: 1
+            filterChild: props.filter
         }
     }
-
 
     render(){
         return (
             <div>
-                <form onSubmit={() => {}}>
+                <form onSubmit={() => this.props.filter}>
                     <div style={{ padding: '0px 15px 0px 15px'}}>
                         <label>
-                            <input id="is3dCheckBox" type="checkbox" /> Red {'>'} 50%&nbsp;&nbsp;&nbsp;
+                            <input id="red" type="checkbox" /> Red {'>'} 50%&nbsp;&nbsp;&nbsp;
                         </label>
                         <label>
-                            <input id="is3dCheckBox" type="checkbox" /> Green {'>'} 50%&nbsp;&nbsp;&nbsp;
+                            <input id="green" type="checkbox" /> Green {'>'} 50%&nbsp;&nbsp;&nbsp;
                         </label>
                         <label>
-                            <input id="is3dCheckBox" type="checkbox" /> Blue {'>'} 50%&nbsp;&nbsp;&nbsp;
+                            <input id="blue" type="checkbox" /> Blue {'>'} 50%&nbsp;&nbsp;&nbsp;
                         </label>
                         <label>
-                            <input id="is3dCheckBox" type="checkbox" /> Saturation {'>'} 50%&nbsp;&nbsp;&nbsp;
+                            <input id="alpha" type="checkbox" /> Saturation {'>'} 50%&nbsp;&nbsp;&nbsp;
                         </label>    
                     </div>
                     <hr/>
