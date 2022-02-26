@@ -66,7 +66,6 @@ export const Home: React.FC<Props> = () => {
         result = result + String((blue > 127) ? true : false)+ ',';
         result = result + String((alpha > 127) ? true : false)+ ','; 
         return result;
-        // return "rgba(" + +r + "," + +g + "," + +b + "," + alpha + ")";
     }
     
     const filter = (filterArr: boolean[]) => {
@@ -105,10 +104,11 @@ export const Home: React.FC<Props> = () => {
         setInitBoks([...initBoks])
     }
 
+
     return (
     <div>
         <FormInput addBox={addBox}/>
-        <FormFilter filter={filter} />
+        <FormFilter doFilter={filter} />
         <div >
         {boxList.map((color:string, index:number)=><Box key={index} id={index} removeBox={removeBox} initIndex={numberInitBox} color={`${color}`}/>)} 
         </div>

@@ -1,33 +1,62 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect, useRef} from 'react'
 
 interface Iform {
-    filter: (arg: boolean[]) => void;
+    doFilter: (arg: boolean[]) => void;
 }
 
-export class FormFilter extends React.Component<Iform> {
+interface thestate {
+    red: string,
+    green: string,
+    blue: string,
+    alpha: string,
+}
+
+export class FormFilter extends React.Component<Iform, thestate> {
+    formRef: any;
+    
     constructor(props:Iform) {
         super(props);
         this.state = {
-            filterChild: props.filter
+            red: 'false',
+            green: 'false',
+            blue: 'false',
+            alpha: 'false',
         }
+    }
+
+
+    dispatchForm =  (doFilter: any) => {
+        this.formRef.addEventListener('submit', function (event:React.FormEvent<HTMLFormElement> ) {
+            const element = event.currentTarget as any
+            event.preventDefault();
+            let arr: string[] = []
+            for (let i=0; i < 4; i++){
+                arr.push(element[i].checked)
+            }
+            doFilter(arr)
+            return false;
+        });
+        this.formRef.dispatchEvent(new Event('submit')) 
     }
 
     render(){
         return (
             <div>
-                <form onSubmit={() => this.props.filter}>
+                <h2>nilai red { this.state.red }</h2>
+                <form  
+  ref={ (ref) =>  {this.formRef = ref} }>
                     <div style={{ padding: '0px 15px 0px 15px'}}>
                         <label>
-                            <input id="red" type="checkbox" /> Red {'>'} 50%&nbsp;&nbsp;&nbsp;
+                            <input id="red" type="checkbox" onChange={(e) => {this.setState({ red: `${e.target.checked}` }); this.dispatchForm(this.props.doFilter);}}/> Red {'>'} 50%&nbsp;&nbsp;&nbsp;
                         </label>
                         <label>
-                            <input id="green" type="checkbox" /> Green {'>'} 50%&nbsp;&nbsp;&nbsp;
+                            <input id="green" type="checkbox" onChange={(e) => {this.setState({ green: `${e.target.checked}` }); this.dispatchForm(this.props.doFilter);}}/> Green {'>'} 50%&nbsp;&nbsp;&nbsp;
                         </label>
                         <label>
-                            <input id="blue" type="checkbox" /> Blue {'>'} 50%&nbsp;&nbsp;&nbsp;
+                            <input id="blue" type="checkbox" onChange={(e) => {this.setState({ blue: `${e.target.checked}` }); this.dispatchForm(this.props.doFilter);}}/> Blue {'>'} 50%&nbsp;&nbsp;&nbsp;
                         </label>
                         <label>
-                            <input id="alpha" type="checkbox" /> Saturation {'>'} 50%&nbsp;&nbsp;&nbsp;
+                            <input id="alpha" type="checkbox" onChange={(e) => {this.setState({ alpha: `${e.target.checked}` }); this.dispatchForm(this.props.doFilter);}}/> Saturation {'>'} 50%&nbsp;&nbsp;&nbsp;
                         </label>    
                     </div>
                     <hr/>
@@ -35,15 +64,6 @@ export class FormFilter extends React.Component<Iform> {
             </div>
           );
     }
-    // const [term, setTerm] = useState('');
-    // const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
-    //     event.preventDefault();
-    //     addBox(term);
-    // }
-
-    // useEffect(() => {
-    //     console.log("dari form nih");
-    // },);
 }
 
 

@@ -8,14 +8,9 @@ export const FormInput: React.FC<Iform> = ({ addBox }) => {
     const [term, setTerm] = useState('');
     const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // if(cekIsValid(term)) addBox(term); 
-        // else console.log('ga aman');
-        addBox(term);
+        if(cekIsValid(term)) addBox(term); 
     }
 
-    useEffect(() => {
-        console.log("dari form nih");
-    },)
 
 
     const cekIsValid = (param: string) => {
@@ -43,7 +38,6 @@ export const FormInput: React.FC<Iform> = ({ addBox }) => {
                 />
                 </label>&nbsp;&nbsp;
                 <input  type='submit' value='Submit' />
-                
             </div>
             <hr/>
         </form>
