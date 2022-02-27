@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Box } from '../component/Box'
 import { FormInput } from '../component/FormInput'
 import { FormFilter } from '../component/FormFilter'
+import './Home.css'
 
 type Props = {
 }

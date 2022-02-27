@@ -42,7 +42,6 @@ export class FormFilter extends React.Component<Iform, thestate> {
     render(){
         return (
             <div>
-                <h2>nilai red { this.state.red }</h2>
                 <form  
   ref={ (ref) =>  {this.formRef = ref} }>
                     <div style={{ padding: '0px 15px 0px 15px'}}>

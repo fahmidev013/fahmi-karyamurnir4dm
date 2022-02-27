@@ -1,0 +1,5 @@
+.containerBox {
+    display:'inline-block'; 
+    margin:'10px 0px 5px 15px'; 
+    border:'1px solid #000';
+}
