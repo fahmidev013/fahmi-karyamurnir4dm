@@ -78,25 +78,26 @@ export const Home: React.FC<Props> = () => {
                 if (temp[compare[j]]) arr.push(boxList[i])
             } 
         }
-        console.log(arr);
-        // arr = sorting(arr);
-        // arr.length > 0 ? setBoxList(sorting(arr)) : setBoxList(arr); 
+        arr = sorting(arr);
+        arr.length > 0 ? setBoxList(sorting(arr)) : setBoxList(arr); 
     }
 
     const sorting = (arrItem: string[]) => {
         let result: string[] = [];
-        let red: string[] = []
-        let green: string[] = []
-        let blue: string[] = []
-        let alpha: string[] = []
-        for (let i = 0; i <= arrItem.length; i++){
-            let temp: boolean[] = hexToRGBA(arrItem[i], null)
-            if (temp[0]) red.push(arrItem[i]);
-            else if (temp[1]) green.push(arrItem[i]);
-            else if (temp[2]) blue.push(arrItem[i]);
-            else if (temp[3]) alpha.push(arrItem[i]); 
+        if (arrItem.length > 0) {
+            let red: string[] = []
+            let green: string[] = []
+            let blue: string[] = []
+            let alpha: string[] = []
+            for (let i = 0; i <= arrItem.length; i++){
+                let temp: boolean[] = hexToRGBA(arrItem[i], null)
+                if (temp[0]) red.push(arrItem[i]);
+                else if (temp[1]) green.push(arrItem[i]);
+                else if (temp[2]) blue.push(arrItem[i]);
+                else if (temp[3]) alpha.push(arrItem[i]); 
+            }
+            result = [...red, ...green, ...blue, ...alpha];
         }
-        result = [...red, ...green, ...blue, ...alpha];
         return result;
     }
 
