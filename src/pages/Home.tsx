@@ -61,19 +61,26 @@ export const Home: React.FC<Props> = () => {
         const hexArr = getChunksFromString(hex.slice(1), chunkSize)
         const [r, g, b, a] = hexArr.map(convertHexUnitTo256)
         console.log(`${r > 127},${g > 127},${b > 127},${getAlphafloat(a, alpha) > 0.5}`);
-        return `${r > 127},${g > 127},${b > 127},${getAlphafloat(a, alpha) > 0.5}`
-        // return `rgba(${r}, ${g}, ${b}, ${getAlphafloat(a, alpha)})`
+        return [r > 127,g > 127,b > 127,getAlphafloat(a, alpha) > 0.5]
     }
       
     
     const filter = (filterArr: boolean[]) => {
-        let compare: string = filterArr.join(',');
+        let compare: number[] = [];
+        for (let i = 0 ; i < filterArr.length; i++){
+            if (filterArr[i]) compare.push(i)
+        };
+        console.log(compare + 'checkbox value');
         let arr: string[] = [];
         for(let i=0;i < boxList.length;i++){
-            let temp: any = hexToRGBA(boxList[i], null)
-            if (temp === compare ) arr.push(boxList[i]); 
+            let temp: boolean[] = hexToRGBA(boxList[i], null)
+            for(let j=0;j < compare.length;j++){
+                if (temp[compare[j]]) arr.push(boxList[i])
+            } 
         }
-        setBoxList(arr);
+        console.log(arr);
+        // arr = sorting(arr);
+        // arr.length > 0 ? setBoxList(sorting(arr)) : setBoxList(arr); 
     }
 
     const sorting = (arrItem: string[]) => {
@@ -83,7 +90,7 @@ export const Home: React.FC<Props> = () => {
         let blue: string[] = []
         let alpha: string[] = []
         for (let i = 0; i <= arrItem.length; i++){
-            let temp: string[] = hexToRGBA(arrItem[i], null).split(',')
+            let temp: boolean[] = hexToRGBA(arrItem[i], null)
             if (temp[0]) red.push(arrItem[i]);
             else if (temp[1]) green.push(arrItem[i]);
             else if (temp[2]) blue.push(arrItem[i]);
