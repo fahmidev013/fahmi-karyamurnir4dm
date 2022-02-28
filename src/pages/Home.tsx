@@ -72,14 +72,27 @@ export const Home: React.FC<Props> = () => {
         };
         console.log(compare + 'checkbox value');
         let arr: string[] = [];
-        for(let i=0;i < boxList.length;i++){
-            let temp: boolean[] = hexToRGBA(boxList[i], null)
-            for(let j=0;j < compare.length;j++){
-                if (temp[compare[j]]) arr.push(boxList[i])
-            } 
+        if (compare.length === 0) {
+            arr = [...initBoks]
+        } else{  
+            let boxs: string[] = [...initBoks];
+            if (localStorage.getItem('boxs') !== null || localStorage.getItem('boxs') !== undefined){
+                let val: string[] = JSON.parse(localStorage.getItem('boxs') || '');
+                if (val.length > 0) {
+                    boxs = [...boxs, JSON.parse(localStorage.getItem('boxs') || '')];
+                }  
+            }
+            for(let i=0;i < boxs.length;i++){
+                let temp: boolean[] = hexToRGBA(boxs[i], null)
+                if (compare.length > 0){
+                    for(let j=0;j < compare.length;j++){
+                        if (temp[compare[j]]) arr.push(boxs[i])
+                    }
+                } 
+            }
+            arr = sorting(arr)
         }
-        arr = sorting(arr);
-        arr.length > 0 ? setBoxList(sorting(arr)) : setBoxList(arr); 
+        setBoxList(arr)  
     }
 
     const sorting = (arrItem: string[]) => {
