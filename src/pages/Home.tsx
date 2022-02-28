@@ -41,42 +41,39 @@ export const Home: React.FC<Props> = () => {
         return boxs
     }
 
+    const isValidHex = (hex:any) => /^#([A-Fa-f0-9]{3,4}){1,2}$/.test(hex)
+
+    const getChunksFromString = (st:any, chunkSize:any) => st.match(new RegExp(`.{${chunkSize}}`, "g"))
     
-    const hexAToRGBA = (h: string[]) => {
-        let r: string = '0', g: string = '0', b: string = '0', a: string = '1';
-      
-        if (h.length === 5) {
-          r = "0x" + h[1] + h[1];
-          g = "0x" + h[2] + h[2];
-          b = "0x" + h[3] + h[3];
-          a = "0x" + h[4] + h[4];
-      
-        } else if (h.length === 9) {
-          r = "0x" + h[1] + h[2];
-          g = "0x" + h[3] + h[4];
-          b = "0x" + h[5] + h[6];
-          a = "0x" + h[7] + h[8];
+    const convertHexUnitTo256 = (hexStr:any) => parseInt(hexStr.repeat(2 / hexStr.length), 16)
+    
+    const getAlphafloat = (a:any, alpha:any) => {
+        if (typeof a !== "undefined") {return a / 255}
+        if ((typeof alpha != "number") || alpha <0 || alpha >1){
+        return 1
         }
-        let alpha: number = +(+a / 255).toFixed(3);
-        let red: number = +r;
-        let green: number = +g;
-        let blue: number = +b;
-        let result: string = '';
-        result = result + String((red > 127) ? true : false) + ',';
-        result = result + String((green > 127) ? true : false)+ ',';
-        result = result + String((blue > 127) ? true : false)+ ',';
-        result = result + String((alpha > 127) ? true : false)+ ','; 
-        return result;
+        return alpha
     }
+    
+    const hexToRGBA = (hex:string, alpha:any) => {
+        if (!isValidHex(hex)) {throw new Error("Invalid HEX")}
+        const chunkSize = Math.floor((hex.length - 1) / 3)
+        const hexArr = getChunksFromString(hex.slice(1), chunkSize)
+        const [r, g, b, a] = hexArr.map(convertHexUnitTo256)
+        console.log(`${r > 127},${g > 127},${b > 127},${getAlphafloat(a, alpha) > 0.5}`);
+        return `${r > 127},${g > 127},${b > 127},${getAlphafloat(a, alpha) > 0.5}`
+        // return `rgba(${r}, ${g}, ${b}, ${getAlphafloat(a, alpha)})`
+    }
+      
     
     const filter = (filterArr: boolean[]) => {
         let compare: string = filterArr.join(',');
         let arr: string[] = [];
-        for(let i=0;i <= boxList.length;i++){
-            let temp: string = hexAToRGBA(boxList[i].split(''))
+        for(let i=0;i < boxList.length;i++){
+            let temp: any = hexToRGBA(boxList[i], null)
             if (temp === compare ) arr.push(boxList[i]); 
         }
-        setBoxList(sorting(arr));
+        setBoxList(arr);
     }
 
     const sorting = (arrItem: string[]) => {
@@ -86,7 +83,7 @@ export const Home: React.FC<Props> = () => {
         let blue: string[] = []
         let alpha: string[] = []
         for (let i = 0; i <= arrItem.length; i++){
-            let temp: string[] = hexAToRGBA(arrItem[i].split('')).split(',')
+            let temp: string[] = hexToRGBA(arrItem[i], null).split(',')
             if (temp[0]) red.push(arrItem[i]);
             else if (temp[1]) green.push(arrItem[i]);
             else if (temp[2]) blue.push(arrItem[i]);
